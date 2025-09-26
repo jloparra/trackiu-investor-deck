@@ -1,38 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackIU - Investor Deck</title>
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React Libraries -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    
-    <!-- Babel for JSX Transpilation -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
     <style>
-      body {
-        overscroll-behavior: none;
-        overflow: hidden;
-      }
-      @keyframes pulse {
-        50% { transform: scale(1.03); }
-      }
-      .animate-pulse-once {
-        animation: pulse 1.5s ease-in-out;
-      }
-      @keyframes fade-in-up {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .animate-fade-in-up {
-        animation: fade-in-up 0.5s ease-out forwards;
-      }
+        @keyframes pulse-once {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-pulse-once {
+            animation: pulse-once 1.5s ease-in-out;
+        }
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.5s ease-out forwards;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+        }
     </style>
 <script type="importmap">
 {
@@ -44,8 +34,1259 @@
 }
 </script>
 </head>
-<body>
+<body class="bg-gray-100">
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        // All components, hooks, and logic are consolidated here.
+        // No more imports/exports.
+
+        // --- from content/translations.ts ---
+        const translations = {
+          slides: {
+            slide1_subtitle: {
+              es: 'Democratizando la Biomecánica para el Fitness del Futuro',
+              en: 'Democratizing Biomechanics for the Future of Fitness',
+              fr: 'Démocratiser la biomécanique pour le fitness du futur',
+            },
+            slide1_disclaimer: {
+              es: 'Contenido confidencial. Prohibida la reproducción sin autorización expresa de TrackIU.',
+              en: 'Confidential content. Reproduction prohibited without express authorization from TrackIU.',
+              fr: 'Contenu confidentiel. Reproduction interdite sans autorisation expresse de TrackIU.',
+            },
+            slide2_title: { es: 'Resumen Ejecutivo', en: 'Executive Summary', fr: 'Résumé Exécutif' },
+            slide2_summary: {
+              es: 'TrackIU es una solución revolucionaria hardware + software que democratiza el acceso a la biomecánica avanzada y la prevención de lesiones en el sector fitness.',
+              en: 'TrackIU is a revolutionary hardware + software solution that democratizes access to advanced biomechanics and injury prevention in the fitness sector.',
+              fr: 'TrackIU est une solution matérielle + logicielle révolutionnaire qui démocratise l\'accès à la biomécanique avancée et à la prévention des blessures dans le secteur du fitness.',
+            },
+            slide2_card1_title: { es: 'Para Gimnasios', en: 'For Gyms', fr: 'Pour les Salles de Sport' },
+            slide2_card1_text: {
+              es: 'Experiencia de usuario del s.XXI y gestión de usuarios de lesiones basado en datos reales.',
+              en: '21st-century user experience and management of users and potential injuries, all thanks to real-time data.',
+              fr: 'Expérience utilisateur du XXIe siècle et gestion des utilisateurs et des blessures potentielles, grâce à des données en temps réel.',
+            },
+            slide2_card2_title: { es: 'Para Entrenadores', en: 'For Trainers', fr: 'Pour les Entraîneurs' },
+            slide2_card2_text: {
+              es: 'Herramienta profesional intuitiva y sencilla de análisis y seguimiento de los clientes.',
+              en: 'Intuitive and simple professional tool for client analysis and monitoring.',
+              fr: 'Outil professionnel intuitif et simple pour l\'analyse et le suivi des clients.',
+            },
+            slide2_card3_title: { es: 'Para Atletas', en: 'For Athletes', fr: 'Pour les Athlètes' },
+            slide2_card3_text: {
+              es: 'Entrenamientos adaptados con IA, permiten optimizar la técnica del movimiento y predecir y prevenir lesiones.',
+              en: 'AI-adapted training that optimizes movement technique and predicts and prevents injuries.',
+              fr: 'Entraînement adapté par IA qui optimise la technique de mouvement et prédit et prévient les blessures.',
+            },
+            slide2_market_label: { es: 'Mercado', en: 'Market', fr: 'Marché' },
+            slide2_market_text: {
+              es: 'Sector fitness funcional y CrossFit con más de 200 gimnasios en España y potencial de expansión europea hacia más de 15 millones de atletas globalmente.',
+              en: 'Functional fitness and CrossFit sector with more than 200 gyms in Spain and potential for European expansion towards more than 15 million athletes globally.',
+              fr: 'Secteur du fitness fonctionnel et du CrossFit avec plus de 200 salles en Espagne et un potentiel d\'expansion européenne vers plus de 15 millions d\'athlètes dans le monde.',
+            },
+            slide3_title: { es: 'El Problema', en: 'The Problem', fr: 'Le Problème' },
+            slide3_quote: {
+              es: 'Sabemos detectar a simple vista asimetrías y riesgos en atletas, pero cuando toca cuantificar y hacer seguimiento real... seguimos dependiendo de papel y lápiz, o soluciones prohibitivas solo aptas para grandes centros, con precios por encima de los €8.000.',
+              en: 'We know how to detect asymmetries and risks in athletes at a glance, but when it comes to quantifying and real tracking... we still depend on pen and paper, or prohibitive solutions only suitable for large centers, with prices above €8,000.',
+              fr: 'Nous savons détecter à l\'œil nu les asymétries et les risques chez les athlètes, mais lorsqu\'il s\'agit de quantifier et de faire un suivi réel... nous dépendons encore du papier et du crayon, ou de solutions prohibitives uniquement adaptées aux grands centres, avec des prix supérieurs à 8 000 €.',
+            },
+            slide3_quote_author: {
+                es: 'José Luis Oñate, CEO - 20 años en el sector fitness',
+                en: 'José Luis Oñate, CEO - 20 years in the fitness sector',
+                fr: 'José Luis Oñate, PDG - 20 ans dans le secteur du fitness',
+            },
+            slide3_card1_text: {
+              es: 'Incremento en lesiones deportivas (últimos 5 años)',
+              en: 'Increase in sports injuries (last 5 years)',
+              fr: 'Augmentation des blessures sportives (5 dernières années)',
+            },
+            slide3_card2_text: {
+              es: 'Soluciones existentes prohibitivas y enfocadas en gimnasios en vez de en el público general.',
+              en: 'Existing solutions are prohibitive and focused on gyms rather than the general public.',
+              fr: 'Les solutions existantes sont prohibitives et axées sur les salles de sport plutôt que sur le grand public.',
+            },
+            slide3_card3_text: {
+              es: 'Gap entre tecnología profesional y accesibilidad real.',
+              en: 'Gap between professional technology and real accessibility.',
+              fr: 'Écart entre la technologie professionnelle et l\'accessibilité réelle.',
+            },
+            slide4_title: { es: 'La Solución TrackIU', en: 'The TrackIU Solution', fr: 'La Solution TrackIU' },
+            slide4_subtitle: { es: 'Sistema integral que combina:', en: 'Comprehensive system that combines:', fr: 'Système complet qui combine :' },
+            slide4_hw_title: { es: 'Hardware Avanzado', en: 'Advanced Hardware', fr: 'Matériel Avancé' },
+            slide4_hw_1: { es: '13 sensores IMU corporales + 1 pulsioxímetro (todo de última generación)', en: '13 body IMU sensors + 1 pulse oximeter (all latest generation)', fr: '13 capteurs IMU corporels + 1 oxymètre de pouls (tous de dernière génération)' },
+            slide4_hw_2: { es: 'Tecnología Bluetooth Mesh para sincronización multiusuario', en: 'Bluetooth Mesh technology for multi-user synchronization', fr: 'Technologie Bluetooth Mesh pour la synchronisation multi-utilisateurs' },
+            slide4_hw_3: { es: 'Diseño ultracompacto y resistente (IP67)', en: 'Ultra-compact and resistant design (IP67)', fr: 'Conception ultra-compacte et résistante (IP67)' },
+            slide4_hw_4: { es: 'Setup plug&play en menos de 7 minutos', en: 'Plug & play setup in less than 7 minutes', fr: 'Installation plug & play en moins de 7 minutes' },
+            slide4_sw_title: { es: 'Software Inteligente', en: 'Intelligent Software', fr: 'Logiciel Intelligent' },
+            slide4_sw_1: { es: 'App intuitiva con cuestionarios gamificados de salud', en: 'Intuitive app with gamified health questionnaires', fr: 'Application intuitive avec des questionnaires de santé ludifiés' },
+            slide4_sw_2: { es: 'Análisis biomecánico 3D en tiempo real', en: 'Real-time 3D biomechanical analysis', fr: 'Analyse biomécanique 3D en temps réel' },
+            slide4_sw_3: { es: 'Algoritmos de IA para personalización automática', en: 'AI algorithms for automatic personalization', fr: 'Algorithmes d\'IA pour la personnalisation automatique' },
+            slide4_sw_4: { es: 'Dashboard profesional para entrenadores', en: 'Professional dashboard for trainers', fr: 'Tableau de bord professionnel pour les entraîneurs' },
+            slide4_method_title: { es: 'Metodología', en: 'Methodology', fr: 'Méthodologie' },
+            slide4_method_1: { es: 'Tests físicos estructurados y validados', en: 'Structured and validated physical tests', fr: 'Tests physiques structurés et validés' },
+            slide4_method_2: { es: 'Correlación datos teóricos + prácticos = riesgo real', en: 'Correlation theoretical + practical data = real risk', fr: 'Corrélation données théoriques + pratiques = risque réel' },
+            slide4_method_3: { es: 'Entrenamientos personalizados automáticos', en: 'Automatic personalized training', fr: 'Entraînements personnalisés automatiques' },
+            slide4_method_4: { es: 'Seguimiento evolutivo continuo', en: 'Continuous evolutionary monitoring', fr: 'Suivi évolutif continu' },
+            slide4_sensor_text: { es: 'Sensor TrackIU - Tecnología IoT Avanzada', en: 'TrackIU Sensor - Advanced IoT Technology', fr: 'Capteur TrackIU - Technologie IoT Avancée' },
+            slide4_price: { es: 'Precio accesible: €450 PVP + €20/mes suscripción', en: 'Affordable price: €450 RRP + €20/month subscription', fr: 'Prix accessible : 450 € PVC + 20 €/mois d\'abonnement' },
+            slide5_title: { es: 'Validación de Mercado', en: 'Market Validation', fr: 'Validation du Marché' },
+            slide5_traction_title: { es: 'Tracción Actual', en: 'Current Traction', fr: 'Traction Actuelle' },
+            slide5_traction_1: { es: '12 gimnasios confirmados para pilotos (Q3 2025)', en: '12 gyms confirmed for pilots (Q3 2025)', fr: '12 salles de sport confirmées pour les pilotes (T3 2025)' },
+            slide5_traction_2: { es: 'Partnership Federación Española Fitness Funcional (200 gimnasios, Q4 2025)', en: 'Partnership Spanish Functional Fitness Federation (200 gyms, Q4 2025)', fr: 'Partenariat avec la Fédération Espagnole de Fitness Fonctionnel (200 salles, T4 2025)' },
+            slide5_traction_3: { es: 'Prototipo funcional en desarrollo (Oct 2025)', en: 'Functional prototype in development (Oct 2025)', fr: 'Prototype fonctionnel en développement (oct. 2025)' },
+            slide5_traction_4_label: { es: 'Objetivo 2026', en: '2026 Goal', fr: 'Objectif 2026' },
+            slide5_traction_4_text: { es: '1200 kits vendidos', en: '1200 kits sold', fr: '1200 kits vendus' },
+            slide5_opportunity_title: { es: 'Oportunidad de Mercado', en: 'Market Opportunity', fr: 'Opportunité de Marché' },
+            slide5_opportunity_1_label: { es: 'Demanda confirmada', en: 'Confirmed demand', fr: 'Demande confirmée' },
+            slide5_opportunity_1_text: { es: 'Validación con +400 atletas y 50+ entrenadores', en: 'Validation with 400+ athletes and 50+ trainers', fr: 'Validation avec +400 athlètes et +50 entraîneurs' },
+            slide5_opportunity_2_label: { es: 'Canal directo', en: 'Direct channel', fr: 'Canal direct' },
+            slide5_opportunity_2_text: { es: 'Federación Española Fitness Funcional', en: 'Spanish Functional Fitness Federation', fr: 'Fédération Espagnole de Fitness Fonctionnel' },
+            slide5_opportunity_3_label: { es: 'Eventos sectoriales', en: 'Sector events', fr: 'Événements sectoriels' },
+            slide5_opportunity_3_text: { es: '6 anuales, exposición a 5.000+ usuarios', en: '6 annual, exposure to 5,000+ users', fr: '6 par an, exposition à plus de 5 000 utilisateurs' },
+            slide5_opportunity_4_label: { es: 'Crecimiento sostenido', en: 'Sustained growth', fr: 'Croissance durable' },
+            slide5_opportunity_4_text: { es: 'CrossFit con +15M atletas globalmente', en: 'CrossFit with 15M+ athletes globally', fr: 'CrossFit avec +15M d\'athlètes dans le monde' },
+            slide6_title: { es: 'Proyección Financiera 2026-2029', en: 'Financial Projection 2026-2029', fr: 'Projection Financière 2026-2029' },
+            slide6_table1_title: { es: 'Crecimiento de Producto', en: 'Product Growth', fr: 'Croissance du Produit' },
+            slide6_table1_h1: { es: 'Año', en: 'Year', fr: 'Année' },
+            slide6_table1_h2: { es: 'Kits Nuevos', en: 'New Kits', fr: 'Nouveaux Kits' },
+            slide6_table1_h3: { es: 'Kits Totales', en: 'Total Kits', fr: 'Kits Totaux' },
+            slide6_table1_h4: { es: 'Usuarios Activos', en: 'Active Users', fr: 'Utilisateurs Actifs' },
+            slide6_table2_title: { es: 'Ingresos (€)', en: 'Revenue (€)', fr: 'Revenus (€)' },
+            slide6_table2_h1: { es: 'Año', en: 'Year', fr: 'Année' },
+            slide6_table2_h2: { es: 'Hardware', en: 'Hardware', fr: 'Matériel' },
+            slide6_table2_h3: { es: 'SaaS', en: 'SaaS', fr: 'SaaS' },
+            slide6_table2_h4: { es: 'Total', en: 'Total', fr: 'Total' },
+            slide6_metrics_title: { es: 'Métricas Clave', en: 'Key Metrics', fr: 'Indicateurs Clés' },
+            slide6_metric1_label: { es: 'LTV/CAC Ratio Proyectado', en: 'Projected LTV/CAC Ratio', fr: 'Ratio LTV/CAC Projeté' },
+            slide6_metric1_value: { es: '12.6:1 a 48 meses', en: '12.6:1 at 48 months', fr: '12.6:1 sur 48 mois' },
+            slide6_metric2_label: { es: 'Margen Suscripción', en: 'Subscription Margin', fr: 'Marge d\'Abonnement' },
+            slide6_metric2_value: { es: '~85%', en: '~85%', fr: '~85%' },
+            slide6_metric3_label: { es: 'Tasa de Churn Proyectada', en: 'Projected Churn Rate', fr: 'Taux de Désabonnement Projeté' },
+            slide6_metric3_value: { es: '<5% anual', en: '<5% annually', fr: '<5% par an' },
+            slide7_title: { es: 'Análisis Competitivo', en: 'Competitive Analysis', fr: 'Analyse Concurrentielle' },
+            slide7_h1: { es: 'Competidor', en: 'Competitor', fr: 'Concurrent' },
+            slide7_h2: { es: 'Precio', en: 'Price', fr: 'Prix' },
+            slide7_h3: { es: 'Target', en: 'Target', fr: 'Cible' },
+            slide7_h4: { es: 'Limitaciones', en: 'Limitations', fr: 'Limitations' },
+            slide7_h5: { es: 'Nuestra Ventaja', en: 'Our Advantage', fr: 'Notre Avantage' },
+            slide7_target1: { es: 'Laboratorios', en: 'Laboratories', fr: 'Laboratoires' },
+            slide7_limits1: { es: 'Individual, complejo', en: 'Individual, complex', fr: 'Individuel, complexe' },
+            slide7_advantage1: { es: 'Grupal, simple', en: 'Group, simple', fr: 'Groupe, simple' },
+            slide7_target2: { es: 'Clínicas', en: 'Clinics', fr: 'Cliniques' },
+            slide7_limits2: { es: 'Médico, estático', en: 'Medical, static', fr: 'Médical, statique' },
+            slide7_advantage2: { es: 'Fitness dinámico', en: 'Dynamic fitness', fr: 'Fitness dynamique' },
+            slide7_target3: { es: 'Investigación', en: 'Research', fr: 'Recherche' },
+            slide7_limits3: { es: 'Setup complejo', en: 'Complex setup', fr: 'Configuration complexe' },
+            slide7_advantage3: { es: 'Plug & play <7\'', en: 'Plug & play <7\'', fr: 'Plug & play <7\'' },
+            slide7_target4: { es: 'Elite deportivo', en: 'Elite sports', fr: 'Sports d\'élite' },
+            slide7_limits4: { es: 'Solo 1 usuario', en: 'Single user only', fr: 'Un seul utilisateur' },
+            slide7_advantage4: { es: 'Múltiples usuarios', en: 'Multiple users', fr: 'Multi-utilisateurs' },
+            slide7_target5: { es: 'Gimnasios + público', en: 'Gyms + public', fr: 'Salles de sport + public' },
+            slide7_limits5: { es: 'Ninguna', en: 'None', fr: 'Aucune' },
+            slide7_advantage5: { es: 'Solución completa accesible', en: 'Complete accessible solution', fr: 'Solution complète et accessible' },
+            slide8_title: { es: 'Diferenciadores Clave', en: 'Key Differentiators', fr: 'Différenciateurs Clés' },
+            slide8_card1_title: { es: 'Biomecánica 3D Grupal', en: '3D Group Biomechanics', fr: 'Biomécanique de Groupe 3D' },
+            slide8_card1_text: { es: 'Único en análisis simultáneo multi-usuario.', en: 'Unique in simultaneous multi-user analysis.', fr: 'Unique en analyse multi-utilisateurs simultanée.' },
+            slide8_card2_title: { es: 'Setup Ultrarrápido', en: 'Ultra-fast Setup', fr: 'Configuration Ultra-rapide' },
+            slide8_card2_text: { es: '<7 minutos vs días/semanas de competencia.', en: '<7 minutes vs days/weeks of competition.', fr: '<7 minutes contre des jours/semaines pour la concurrence.' },
+            slide8_card3_title: { es: 'Verticalización', en: 'Verticalization', fr: 'Verticalisation' },
+            slide8_card3_text: { es: 'Específico para fitness funcional, expansible a otros deportes.', en: 'Specific for functional fitness, expandable to other sports.', fr: 'Spécifique au fitness fonctionnel, extensible à d\'autres sports.' },
+            slide8_card4_title: { es: 'Precio Disruptivo', en: 'Disruptive Price', fr: 'Prix Disruptif' },
+            slide8_card4_text: { es: '10x más económico que soluciones profesionales.', en: '10x more economical than professional solutions.', fr: '10x plus économique que les solutions professionnelles.' },
+            slide8_card5_title: { es: 'IA Integrada', en: 'Integrated AI', fr: 'IA Intégrée' },
+            slide8_card5_text: { es: 'Personalización automática y predicción de lesiones.', en: 'Automatic personalization and injury prediction.', fr: 'Personnalisation automatique et prédiction des blessures.' },
+            slide9_title: { es: 'Equipo Fundador', en: 'Founding Team', fr: 'Équipe Fondatrice' },
+            slide9_p1_title: { es: 'CEO', en: 'CEO', fr: 'PDG' },
+            slide9_p1_exp_label: { es: 'Experiencia', en: 'Experience', fr: 'Expérience' },
+            slide9_p1_exp_text: { es: '20 años en el sector fitness (15 como atleta y 20 combinados como atleta y entrenador).', en: '20 years in the fitness sector (15 as an athlete and 20 combined as an athlete and trainer).', fr: '20 ans dans le secteur du fitness (15 en tant qu\'athlète et 20 combinés en tant qu\'athlète et entraîneur).' },
+            slide9_p1_resp_label: { es: 'Responsabilidades', en: 'Responsibilities', fr: 'Responsabilités' },
+            slide9_p1_resp_text: { es: 'Founder, estrategia comercial, red de gimnasios, captación inversión.', en: 'Founder, commercial strategy, gym network, investment raising.', fr: 'Fondateur, stratégie commerciale, réseau de salles de sport, levée de fonds.' },
+            slide9_p2_title: { es: 'CTO', en: 'CTO', fr: 'CTO' },
+            slide9_p2_exp_label: { es: 'Expertise', en: 'Expertise', fr: 'Expertise' },
+            slide9_p2_exp_text: { es: 'Desarrollo algoritmos IA, arquitectura técnica.', en: 'AI algorithm development, technical architecture.', fr: 'Développement d\'algorithmes d\'IA, architecture technique.' },
+            slide9_p2_resp_label: { es: 'Responsabilidades', en: 'Responsibilities', fr: 'Responsabilités' },
+            slide9_p2_resp_text: { es: 'Crear y mantener página web, API, IMUs, modelo Machine Learning y Data Cluster.', en: 'Create and maintain website, API, IMUs, Machine Learning model and Data Cluster.', fr: 'Créer et maintenir le site web, l\'API, les IMU, le modèle de Machine Learning et le Data Cluster.' },
+            slide9_p2_expr_text: { es: 'Especialista IoT, biomecánica, contribuidor Drupal 15+ años.', en: 'IoT specialist, biomechanics, Drupal contributor 15+ years.', fr: 'Spécialiste IoT, biomécanique, contributeur Drupal depuis plus de 15 ans.' },
+            slide9_p3_title: { es: 'Lead Developer', en: 'Lead Developer', fr: 'Lead Developer' },
+            slide9_p3_resp_text: { es: 'App móvil, UX/UI, gestión integral sistemas.', en: 'Mobile app, UX/UI, comprehensive systems management.', fr: 'Application mobile, UX/UI, gestion intégrale des systèmes.' },
+            slide9_investors: { es: 'Inversores: 20% distribuido proporcionalmente', en: 'Investors: 20% distributed proportionally', fr: 'Investisseurs : 20% répartis proportionnellement' },
+            slide10_title: { es: 'Roadmap Estratégico', en: 'Strategic Roadmap', fr: 'Feuille de Route Stratégique' },
+            slide10_p1_title: { es: 'Q3 2025: Validación Inicial', en: 'Q3 2025: Initial Validation', fr: 'T3 2025 : Validation Initiale' },
+            slide10_p1_i1: { es: 'Proyecto validado con +400 atletas y 50 entrenadores', en: 'Project validated with +400 athletes and 50 trainers', fr: 'Projet validé avec +400 athlètes et 50 entraîneurs' },
+            slide10_p1_i2: { es: 'Compromiso con 12 Gimnasios para piloto', en: 'Commitment with 12 Gyms for pilot', fr: 'Engagement avec 12 Salles de sport pour le pilote' },
+            slide10_p2_title: { es: 'Q4 2025: Pilotos Reales', en: 'Q4 2025: Real Pilots', fr: 'T4 2025 : Pilotes Réels' },
+            slide10_p2_i1: { es: 'Entrenamiento de la IA a través de gimnasios asociados', en: 'AI training through associated gyms', fr: 'Entraînement de l\'IA via les salles de sport associées' },
+            slide10_p2_i2: { es: 'Trabajos de Identidad de Marca y Marketing', en: 'Brand Identity and Marketing work', fr: 'Travaux sur l\'identité de marque et le marketing' },
+            slide10_p3_title: { es: '2026: Comercialización', en: '2026: Commercialization', fr: '2026 : Commercialisation' },
+            slide10_p3_i1: { es: 'Lanzamiento comercial España: 1200 kits', en: 'Commercial launch Spain: 1200 kits', fr: 'Lancement commercial en Espagne : 1200 kits' },
+            slide10_p3_i2: { es: 'Alianzas estratégicas con 400 Gimnasios en España', en: 'Strategic alliances with 400 Gyms in Spain', fr: 'Alliances stratégiques avec 400 Salles de sport en Espagne' },
+            slide10_p4_title: { es: '2027+: Expansión', en: '2027+: Expansion', fr: '2027+ : Expansion' },
+            slide10_p4_i1: { es: 'Desarrollo otros deportes', en: 'Development for other sports', fr: 'Développement pour d\'autres sports' },
+            slide10_p4_i2: { es: 'Mercados internacionales (Europa, LATAM, US)', en: 'International markets (Europe, LATAM, US)', fr: 'Marchés internationaux (Europe, LATAM, US)' },
+            slide11_title: { es: 'Visión 2030: Estándar Global', en: 'Vision 2030: Global Standard', fr: 'Vision 2030 : Norme Mondiale' },
+            slide11_metric1: { es: 'Usuarios activos globalmente', en: 'Active users globally', fr: 'Utilisateurs actifs dans le monde' },
+            slide11_metric2: { es: 'con 85% margen bruto', en: 'with 85% gross margin', fr: 'avec 85% de marge brute' },
+            slide11_metric3: { es: 'Gimnasios en 25 países', en: 'Gyms in 25 countries', fr: 'Salles de sport dans 25 pays' },
+            slide11_metric4_value: { es: 'Líder europeo', en: 'European Leader', fr: 'Leader européen' },
+            slide11_metric4_label: { es: 'en biomecánica fitness', en: 'in fitness biomechanics', fr: 'en biomécanique du fitness' },
+            slide11_revolution_title: { es: 'La Revolución del Dato', en: 'The Data Revolution', fr: 'La Révolution des Données' },
+            slide11_revolution_1: { es: 'Dataset más grande de biomecánica fitness', en: 'Largest fitness biomechanics dataset', fr: 'Le plus grand jeu de données sur la biomécanique du fitness' },
+            slide11_revolution_2: { es: 'Benchmarking científico e investigación', en: 'Scientific benchmarking and research', fr: 'Benchmarking scientifique et recherche' },
+            slide11_revolution_3: { es: 'IA predictiva para prevención lesiones', en: 'Predictive AI for injury prevention', fr: 'IA prédictive pour la prévention des blessures' },
+            slide12_title: { es: 'Ronda de Inversión', en: 'Investment Round', fr: 'Tour de Financement' },
+            slide12_objective: { es: '€1.500.000 por 15% equity', en: '€1,500,000 for 15% equity', fr: '1 500 000 € pour 15% de participation' },
+            slide12_distribution_title: { es: 'Distribución de Fondos', en: 'Distribution of Funds', fr: 'Répartition des Fonds' },
+            slide12_fund1_title: { es: 'MVP Desarrollo', en: 'MVP Development', fr: 'Développement MVP' },
+            slide12_fund1_desc: { es: 'Finalización prototipo comercial', en: 'Commercial prototype finalization', fr: 'Finalisation du prototype commercial' },
+            slide12_fund2_title: { es: 'Producción Hardware', en: 'Hardware Production', fr: 'Production Matérielle' },
+            slide12_fund2_desc: { es: 'Lanzamiento primeros 1,200 sensores', en: 'Launch of first 1,200 sensors', fr: 'Lancement des 1 200 premiers capteurs' },
+            slide12_fund3_title: { es: 'I+D + Patentes', en: 'R&D + Patents', fr: 'R&D + Brevets' },
+            slide12_fund3_desc: { es: 'Propiedad intelectual y legal', en: 'Intellectual and legal property', fr: 'Propriété intellectuelle et juridique' },
+            slide12_fund4_title: { es: 'Desarrollo Adicional', en: 'Additional Development', fr: 'Développement Supplémentaire' },
+            slide12_fund4_desc: { es: 'Algoritmos avanzados, escalabilidad', en: 'Advanced algorithms, scalability', fr: 'Algorithmes avancés, scalabilité' },
+            slide12_fund5_title: { es: 'Team Building', en: 'Team Building', fr: 'Renforcement d\'équipe' },
+            slide12_fund5_desc: { es: 'Contratación equipo técnico clave', en: 'Hiring key technical team', fr: 'Recrutement de l\'équipe technique clé' },
+            slide12_fund6_title: { es: 'Marketing & Ventas', en: 'Marketing & Sales', fr: 'Marketing & Ventes' },
+            slide12_fund6_desc: { es: 'Adquisición clientes, partnerships', en: 'Customer acquisition, partnerships', fr: 'Acquisition de clients, partenariats' },
+            slide12_fund7_title: { es: 'Working Capital', en: 'Working Capital', fr: 'Fonds de Roulement' },
+            slide12_fund7_desc: { es: 'Colchón imprevistos y operaciones', en: 'Contingency and operations buffer', fr: 'Fonds pour imprévus et opérations' },
+            slide13_title: { es: 'Riesgos y Mitigadores', en: 'Risks and Mitigators', fr: 'Risques et Atténuateurs' },
+            slide13_prob_label: { es: 'Probabilidad', en: 'Probability', fr: 'Probabilité' },
+            slide13_miti_label: { es: 'Mitigador', en: 'Mitigator', fr: 'Atténuateur' },
+            slide13_prob_medium: { es: 'Media', en: 'Medium', fr: 'Moyenne' },
+            slide13_prob_low: { es: 'Baja', en: 'Low', fr: 'Faible' },
+            slide13_risk1_title: { es: 'Adopción Lenta', en: 'Slow Adoption', fr: 'Adoption Lente' },
+            slide13_risk1_miti: { es: 'Partnership FEFF + demos gratuitas', en: 'FEFF Partnership + free demos', fr: 'Partenariat FEFF + démos gratuites' },
+            slide13_risk2_title: { es: 'Competencia Tech Giants', en: 'Competition from Tech Giants', fr: 'Concurrence des Géants de la Tech' },
+            slide13_risk2_miti: { es: 'Especialización vertical + IP + velocidad', en: 'Vertical specialization + IP + speed', fr: 'Spécialisation verticale + PI + vitesse' },
+            slide13_risk3_title: { es: 'Escalado Hardware', en: 'Hardware Scaling', fr: 'Mise à l\'échelle du Matériel' },
+            slide13_risk3_miti: { es: 'Partnerships manufactureros establecidos', en: 'Established manufacturing partnerships', fr: 'Partenariats de fabrication établis' },
+            slide13_risk4_title: { es: 'Regulaciones Datos', en: 'Data Regulations', fr: 'Réglementation des Données' },
+            slide13_risk4_miti: { es: 'Compliance GDPR desde diseño', en: 'GDPR compliance by design', fr: 'Conformité RGPD dès la conception' },
+            slide13_defense_title: { es: 'Estrategia de Defensa', en: 'Defense Strategy', fr: 'Stratégie de Défense' },
+            slide13_defense1_label: { es: 'Propiedad intelectual', en: 'Intellectual Property', fr: 'Propriété Intellectuelle' },
+            slide13_defense1_text: { es: 'Patentes algoritmos, sensores, gamificación', en: 'Patents on algorithms, sensors, gamification', fr: 'Brevets sur les algorithmes, capteurs, ludification' },
+            slide13_defense2_label: { es: 'Certificaciones', en: 'Certifications', fr: 'Certifications' },
+            slide13_defense2_text: { es: 'CE/FDA, GDPR, ISO 27001', en: 'CE/FDA, GDPR, ISO 27001', fr: 'CE/FDA, RGPD, ISO 27001' },
+            slide13_defense3_label: { es: 'Network effects', en: 'Network effects', fr: 'Effets de réseau' },
+            slide13_defense3_text: { es: 'Valor incrementa exponencialmente con más datos', en: 'Value increases exponentially with more data', fr: 'La valeur augmente de façon exponentielle avec plus de données' },
+            slide13_defense4_label: { es: 'Especialización vertical', en: 'Vertical specialization', fr: 'Spécialisation verticale' },
+            slide13_defense4_text: { es: 'Focus específico fitness funcional', en: 'Specific focus on functional fitness', fr: 'Focus spécifique sur le fitness fonctionnel' },
+            slide14_title: { es: 'Objetivos de Impacto', en: 'Impact Objectives', fr: 'Objectifs d\'Impact' },
+            slide14_card1_title: { es: 'Impacto en Salud', en: 'Health Impact', fr: 'Impact sur la Santé' },
+            slide14_card1_i1: { es: 'Reducción 40% lesiones deportivas evitables', en: '40% reduction in avoidable sports injuries', fr: 'Réduction de 40% des blessures sportives évitables' },
+            slide14_card1_i2: { es: 'Mejora técnica movimiento en 80% usuarios', en: 'Improved movement technique in 80% of users', fr: 'Amélioration de la technique de mouvement chez 80% des utilisateurs' },
+            slide14_card1_i3: { es: 'Detección temprana asimetrías y desequilibrios', en: 'Early detection of asymmetries and imbalances', fr: 'Détection précoce des asymétries et des déséquilibres' },
+            slide14_card2_title: { es: 'Impacto Social', en: 'Social Impact', fr: 'Impact Social' },
+            slide14_card2_i1: { es: 'Democratización biomecánica avanzada', en: 'Democratization of advanced biomechanics', fr: 'Démocratisation de la biomécanique avancée' },
+            slide14_card2_i2: { es: 'Acceso tecnología profesional para todos', en: 'Access to professional technology for all', fr: 'Accès à la technologie professionnelle pour tous' },
+            slide14_card2_i3: { es: 'Formación continua entrenadores', en: 'Continuous training for trainers', fr: 'Formation continue des entraîneurs' },
+            slide14_card3_title: { es: 'Impacto en Innovación', en: 'Innovation Impact', fr: 'Impact sur l\'Innovation' },
+            slide14_card3_i1: { es: 'Dataset biomecánico más grande del sector', en: 'Largest biomechanics dataset in the sector', fr: 'Le plus grand jeu de données biomécaniques du secteur' },
+            slide14_card3_i2: { es: 'Investigación colaborativa con universidades', en: 'Collaborative research with universities', fr: 'Recherche collaborative avec les universités' },
+            slide14_card3_i3: { es: 'Desarrollo IA predictiva lesiones', en: 'Development of predictive AI for injuries', fr: 'Développement d\'IA prédictive pour les blessures' },
+            slide14_card4_title: { es: 'Impacto Económico', en: 'Economic Impact', fr: 'Impact Économique' },
+            slide14_card4_i1: { es: 'Reducción costes sanitarios por lesiones', en: 'Reduction of healthcare costs due to injuries', fr: 'Réduction des coûts de santé liés aux blessures' },
+            slide14_card4_i2: { es: 'Optimización eficiencia gimnasios', en: 'Optimization of gym efficiency', fr: 'Optimisation de l\'efficacité des salles de sport' },
+            slide14_card4_i3: { es: 'Creación empleo tecnológico especializado', en: 'Creation of specialized tech jobs', fr: 'Création d\'emplois technologiques spécialisés' },
+            slide15_title: { es: 'Contacto Directo', en: 'Direct Contact', fr: 'Contact Direct' },
+            slide15_email_label: { es: 'Email', en: 'Email', fr: 'Email' },
+            slide15_phone_label: { es: 'Teléfono', en: 'Phone', fr: 'Téléphone' },
+            slide15_structure_title: { es: 'Estructura Empresarial', en: 'Corporate Structure', fr: 'Structure d\'Entreprise' },
+            slide15_address_label: { es: 'Dirección', en: 'Address', fr: 'Adresse' },
+            slide15_cta: { es: '¿Listo para revolucionar el fitness con nosotros?', en: 'Ready to revolutionize fitness with us?', fr: 'Rejoignez-nous pour révolutionner le fitness.' },
+            slide16_investors_title: { es: 'Para Inversores', en: 'For Investors', fr: 'Pour les Investisseurs' },
+            slide16_investors_1: { es: 'ROI potencial 10x en 5 años', en: '10x potential ROI in 5 years', fr: 'ROI potentiel de 10x en 5 ans' },
+            slide16_investors_2: { es: 'Mercado TAM €2B en crecimiento acelerado', en: '€2B TAM market with accelerated growth', fr: 'Marché TAM de 2 Mds € en croissance accélérée' },
+            slide16_investors_3: { es: 'Equipo probado y tecnología diferencial demostrada', en: 'Proven team and demonstrated differential technology', fr: 'Équipe éprouvée et technologie différentielle démontrée' },
+            slide16_investors_4: { es: 'Tracción validada con 12 gimnasios + partnership federación', en: 'Validated traction with 12 gyms + federation partnership', fr: 'Traction validée avec 12 salles + partenariat avec la fédération' },
+            slide16_thank_you: {
+              es: '¡Gracias!',
+              en: 'Thank You!',
+              fr: 'Merci !',
+            },
+          }
+        };
+
+        // --- from hooks/useCountUp.tsx ---
+        const useCountUp = (endValue, duration = 2000) => {
+            const easeOutExpo = (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t));
+            const [count, setCount] = React.useState(0);
+            const frameRate = 1000 / 60;
+            const totalFrames = Math.round(duration / frameRate);
+            const countRef = React.useRef(null);
+
+            React.useEffect(() => {
+                let frame = 0;
+                const counter = () => {
+                    frame++;
+                    const progress = easeOutExpo(frame / totalFrames);
+                    const currentCount = Math.round(endValue * progress);
+                    setCount(currentCount);
+
+                    if (frame < totalFrames) {
+                        countRef.current = requestAnimationFrame(counter);
+                    } else {
+                        setCount(endValue);
+                    }
+                };
+                countRef.current = requestAnimationFrame(counter);
+                
+                return () => {
+                    if(countRef.current) cancelAnimationFrame(countRef.current);
+                };
+            }, [endValue, duration, totalFrames]);
+
+            return count;
+        };
+
+        // --- from hooks/useLanguage.tsx ---
+        const LanguageContext = React.createContext(undefined);
+
+        const LanguageProvider = ({ children }) => {
+          const [language, setLanguage] = React.useState('es');
+
+          const t = React.useCallback((key, section = 'slides') => {
+            const sectionTranslations = translations[section];
+            if (sectionTranslations?.[key]?.[language]) {
+              return sectionTranslations[key][language];
+            }
+            console.warn(`Translation not found for key: ${key} in section: ${section} for language: ${language}`);
+            return sectionTranslations?.[key]?.['es'] || key;
+          }, [language]);
+
+          return (
+            <LanguageContext.Provider value={{ language, setLanguage, t }}>
+              {children}
+            </LanguageContext.Provider>
+          );
+        };
+
+        const useLanguage = () => {
+          const context = React.useContext(LanguageContext);
+          if (!context) {
+            throw new Error('useLanguage must be used within a LanguageProvider');
+          }
+          return context;
+        };
+
+        // --- from components/SlideWrapper.tsx ---
+        const SlideWrapper = ({ children, className = '' }) => {
+            const [isVisible, setIsVisible] = React.useState(false);
+
+            React.useEffect(() => {
+                const timer = requestAnimationFrame(() => setIsVisible(true));
+                return () => cancelAnimationFrame(timer);
+            }, []);
+
+            return (
+                <div className={`w-full min-h-full flex flex-col items-center justify-start p-4 py-8 md:p-8 md:py-10 transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'} ${className}`}>
+                    <div className="w-full max-w-6xl mx-auto">
+                        {children}
+                    </div>
+                </div>
+            );
+        };
+        
+        // --- from components/slides/*.tsx ---
+        const Slide1 = () => {
+          const { t } = useLanguage();
+          return (
+              <SlideWrapper className="justify-center">
+                  <div className="w-full max-w-4xl mx-auto bg-gradient-to-r from-[#5CBCC8] to-[#4A90A4] text-white rounded-2xl shadow-2xl p-12 md:p-20 text-center flex flex-col justify-center items-center">
+                      <h1 className="text-5xl md:text-7xl font-bold mb-4">TrackIU</h1>
+                      <p className="text-xl md:text-3xl font-light mb-12">{t('slide1_subtitle', 'slides')}</p>
+                      <div className="w-24 h-1 bg-white/50 rounded-full mb-8"></div>
+                      <p className="text-xs md:text-sm">{t('slide1_disclaimer', 'slides')}</p>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        const Slide2 = () => {
+          const { t } = useLanguage();
+          return (
+            <SlideWrapper>
+              <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide2_title', 'slides')}</h2>
+                <p className="text-center text-lg mb-8 text-gray-700 max-w-3xl mx-auto bg-teal-50 rounded-lg p-4">{t('slide2_summary', 'slides')}</p>
+                
+                <div className="grid md:grid-cols-3 gap-6 text-center">
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 className="text-xl font-semibold text-[#5CBCC8] mb-2">{t('slide2_card1_title', 'slides')}</h3>
+                    <p className="text-gray-600 text-sm">{t('slide2_card1_text', 'slides')}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 className="text-xl font-semibold text-[#5CBCC8] mb-2">{t('slide2_card2_title', 'slides')}</h3>
+                    <p className="text-gray-600 text-sm">{t('slide2_card2_text', 'slides')}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 className="text-xl font-semibold text-[#5CBCC8] mb-2">{t('slide2_card3_title', 'slides')}</h3>
+                    <p className="text-gray-600 text-sm">{t('slide2_card3_text', 'slides')}</p>
+                  </div>
+                </div>
+                
+                <p className="text-center mt-10 text-base text-gray-700 bg-teal-50 rounded-lg p-4"><span className="font-bold text-[#4A90A4]">{t('slide2_market_label', 'slides')}:</span> {t('slide2_market_text', 'slides')}</p>
+              </div>
+            </SlideWrapper>
+          );
+        };
+
+        const Slide3 = () => {
+          const { t } = useLanguage();
+          const animatedPercentage = useCountUp(65, 1500);
+
+          return (
+            <SlideWrapper>
+              <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide3_title', 'slides')}</h2>
+                
+                <div className="bg-orange-50 border-l-4 border-orange-300 p-4 rounded-r-lg mb-8">
+                  <p className="text-gray-700 italic">"{t('slide3_quote', 'slides')}"</p>
+                  <p className="text-right text-sm font-semibold text-gray-600 mt-2">&mdash; {t('slide3_quote_author', 'slides')}</p>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-6 text-center">
+                  <div className="bg-gradient-to-br from-[#5CBCC8] to-[#4A90A4] text-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center">
+                    <span className="text-6xl font-bold">{animatedPercentage}%</span>
+                    <p className="mt-2 text-base">{t('slide3_card1_text', 'slides')}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80 flex flex-col items-center justify-center">
+                     <span className="text-4xl mb-3">💰</span>
+                    <p className="text-gray-600">{t('slide3_card2_text', 'slides')}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80 flex flex-col items-center justify-center">
+                    <span className="text-4xl mb-3">⚡️</span>
+                    <p className="text-gray-600">{t('slide3_card3_text', 'slides')}</p>
+                  </div>
+                </div>
+              </div>
+            </SlideWrapper>
+          );
+        };
+        
+        const Slide4 = () => {
+            const { t } = useLanguage();
+            const CheckIcon = () => (
+                <svg className="w-5 h-5 text-teal-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+            );
+            return (
+              <SlideWrapper>
+                <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                  <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-4">{t('slide4_title', 'slides')}</h2>
+                  <p className="text-center text-gray-600 mb-8">{t('slide4_subtitle', 'slides')}</p>
+
+                  <div className="grid md:grid-cols-2 gap-6 mb-6">
+                    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                      <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{t('slide4_hw_title', 'slides')}</h3>
+                      <ul className="space-y-3 text-gray-600 text-sm">
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_hw_1', 'slides')}</li>
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_hw_2', 'slides')}</li>
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_hw_3', 'slides')}</li>
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_hw_4', 'slides')}</li>
+                      </ul>
+                    </div>
+                    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                      <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{t('slide4_sw_title', 'slides')}</h3>
+                      <ul className="space-y-3 text-gray-600 text-sm">
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_sw_1', 'slides')}</li>
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_sw_2', 'slides')}</li>
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_sw_3', 'slides')}</li>
+                        <li className="flex items-start"><CheckIcon /> {t('slide4_sw_4', 'slides')}</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-6 items-stretch">
+                      <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80 flex-1">
+                          <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{t('slide4_method_title', 'slides')}</h3>
+                          <ul className="space-y-3 text-gray-600 text-sm">
+                          <li className="flex items-start"><CheckIcon /> {t('slide4_method_1', 'slides')}</li>
+                          <li className="flex items-start"><CheckIcon /> {t('slide4_method_2', 'slides')}</li>
+                          <li className="flex items-start"><CheckIcon /> {t('slide4_method_3', 'slides')}</li>
+                          <li className="flex items-start"><CheckIcon /> {t('slide4_method_4', 'slides')}</li>
+                          </ul>
+                      </div>
+                      <div className="flex-1 md:flex-none md:w-1/3 bg-white p-6 rounded-xl shadow-md border border-gray-200/80 flex flex-col items-center justify-center text-center">
+                          <img src="assets/sensor.jpg" alt="TrackIU Sensor" className="rounded-lg mb-4 max-w-[150px] w-full" />
+                          <p className="text-sm font-semibold text-gray-700">{t('slide4_sensor_text', 'slides')}</p>
+                      </div>
+                  </div>
+
+                  <div className="mt-8 text-center bg-gradient-to-r from-[#5CBCC8] to-[#4A90A4] text-white p-4 rounded-xl shadow-lg">
+                    <p className="text-lg md:text-xl font-bold">{t('slide4_price', 'slides')}</p>
+                  </div>
+                </div>
+              </SlideWrapper>
+            );
+        };
+        
+        const Slide5 = () => {
+          const { t } = useLanguage();
+          const CheckIcon = () => (
+              <svg className="w-5 h-5 text-teal-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          );
+          return (
+            <SlideWrapper>
+              <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide5_title', 'slides')}</h2>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{t('slide5_traction_title', 'slides')}</h3>
+                    <ul className="space-y-3 text-gray-600">
+                      <li className="flex items-start"><CheckIcon /> {t('slide5_traction_1', 'slides')}</li>
+                      <li className="flex items-start"><CheckIcon /> {t('slide5_traction_2', 'slides')}</li>
+                      <li className="flex items-start"><CheckIcon /> {t('slide5_traction_3', 'slides')}</li>
+                      <li className="flex items-start"> <div><strong className="text-[#2B5F75]">{t('slide5_traction_4_label', 'slides')}:</strong> {t('slide5_traction_4_text', 'slides')}</div></li>
+                    </ul>
+                  </div>
+                  <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                    <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{t('slide5_opportunity_title', 'slides')}</h3>
+                    <div className="space-y-4 text-gray-600">
+                      <div className="flex items-start">
+                        <CheckIcon />
+                        <div>
+                          <p className="font-bold text-[#2B5F75]">{t('slide5_opportunity_1_label', 'slides')}</p>
+                          <p className="text-sm">{t('slide5_opportunity_1_text', 'slides')}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckIcon />
+                        <div>
+                          <p className="font-bold text-[#2B5F75]">{t('slide5_opportunity_2_label', 'slides')}</p>
+                          <p className="text-sm">{t('slide5_opportunity_2_text', 'slides')}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start">
+                        <CheckIcon />
+                        <div>
+                          <p className="font-bold text-[#2B5F75]">{t('slide5_opportunity_3_label', 'slides')}</p>
+                          <p className="text-sm">{t('slide5_opportunity_3_text', 'slides')}</p>
+                        </div>
+                      </div>
+                       <div className="flex items-start">
+                        <CheckIcon />
+                        <div>
+                          <p className="font-bold text-[#2B5F75]">{t('slide5_opportunity_4_label', 'slides')}</p>
+                          <p className="text-sm">{t('slide5_opportunity_4_text', 'slides')}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </SlideWrapper>
+          );
+        };
+        
+        const Slide6 = () => {
+            const { t } = useLanguage();
+            const productData = [
+                { year: 2026, newKits: '1,200', totalKits: '1,200', activeUsers: '1,560' },
+                { year: 2027, newKits: '4,000', totalKits: '5,200', activeUsers: '6,760' },
+                { year: 2028, newKits: '12,000', totalKits: '17,200', activeUsers: '22,360' },
+                { year: 2029, newKits: '28,000', totalKits: '45,200', activeUsers: '58,760' },
+            ];
+            const revenueData = [
+                { year: 2026, hardware: '540,000', saas: '187,200', total: '727,200' },
+                { year: 2027, hardware: '1,800,000', saas: '811,200', total: '2,611,200' },
+                { year: 2028, hardware: '5,400,000', saas: '2,683,200', total: '8,083,200' },
+                { year: 2029, hardware: '12,600,000', saas: '7,051,200', total: '19,651,200' },
+            ];
+            return (
+                <SlideWrapper>
+                    <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide6_title', 'slides')}</h2>
+                        <div className="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 className="text-xl font-semibold text-center text-[#4A90A4] mb-4">{t('slide6_table1_title', 'slides')}</h3>
+                                <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md">
+                                    <table className="w-full text-center text-sm">
+                                        <thead className="bg-[#4A90A4] text-white">
+                                            <tr>
+                                                <th className="p-3 font-semibold">{t('slide6_table1_h1', 'slides')}</th>
+                                                <th className="p-3 font-semibold">{t('slide6_table1_h2', 'slides')}</th>
+                                                <th className="p-3 font-semibold">{t('slide6_table1_h3', 'slides')}</th>
+                                                <th className="p-3 font-semibold">{t('slide6_table1_h4', 'slides')}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="bg-white text-[#2B5F75]">
+                                            {productData.map((row) => (
+                                                <tr key={row.year} className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+                                                    <td className="py-3 px-2 font-bold text-[#4A90A4]">{row.year}</td>
+                                                    <td className="py-3 px-2">{row.newKits}</td>
+                                                    <td className="py-3 px-2">{row.totalKits}</td>
+                                                    <td className="py-3 px-2">{row.activeUsers}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 className="text-xl font-semibold text-center text-[#4A90A4] mb-4">{t('slide6_table2_title', 'slides')}</h3>
+                                 <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md">
+                                    <table className="w-full text-center text-sm">
+                                        <thead className="bg-[#4A90A4] text-white">
+                                            <tr>
+                                                <th className="p-3 font-semibold">{t('slide6_table2_h1', 'slides')}</th>
+                                                <th className="p-3 font-semibold">{t('slide6_table2_h2', 'slides')}</th>
+                                                <th className="p-3 font-semibold">{t('slide6_table2_h3', 'slides')}</th>
+                                                <th className="p-3 font-semibold">{t('slide6_table2_h4', 'slides')}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="bg-white text-[#2B5F75]">
+                                            {revenueData.map((row) => (
+                                                <tr key={row.year} className="border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+                                                    <td className="py-3 px-2 font-bold text-[#4A90A4]">{row.year}</td>
+                                                    <td className="py-3 px-2">€{row.hardware}</td>
+                                                    <td className="py-3 px-2">€{row.saas}</td>
+                                                    <td className="py-3 px-2">€{row.total}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 border-t border-gray-200/80 pt-6">
+                            <h3 className="text-xl font-semibold text-center text-[#4A90A4] mb-4">{t('slide6_metrics_title', 'slides')}</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200/80">
+                                    <p className="font-bold text-2xl text-[#2B5F75]">{t('slide6_metric1_value', 'slides')}</p>
+                                    <p className="text-sm text-gray-600">{t('slide6_metric1_label', 'slides')}</p>
+                                </div>
+                                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200/80">
+                                    <p className="font-bold text-2xl text-[#2B5F75]">{t('slide6_metric2_value', 'slides')}</p>
+                                    <p className="text-sm text-gray-600">{t('slide6_metric2_label', 'slides')}</p>
+                                </div>
+                                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200/80">
+                                    <p className="font-bold text-2xl text-[#2B5F75]">{t('slide6_metric3_value', 'slides')}</p>
+                                    <p className="text-sm text-gray-600">{t('slide6_metric3_label', 'slides')}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </SlideWrapper>
+            );
+        };
+        
+        const Slide7 = () => {
+          const { t } = useLanguage();
+          const competitors = [
+            { name: 'Xsens', price: '€50K+', target: t('slide7_target1', 'slides'), limitations: t('slide7_limits1', 'slides'), advantage: t('slide7_advantage1', 'slides') },
+            { name: 'Technaid', price: '€30K+', target: t('slide7_target2', 'slides'), limitations: t('slide7_limits2', 'slides'), advantage: t('slide7_advantage2', 'slides') },
+            { name: 'Noraxon', price: '€25K+', target: t('slide7_target3', 'slides'), limitations: t('slide7_limits3', 'slides'), advantage: t('slide7_advantage3', 'slides') },
+            { name: 'ISEN', price: '€15K+', target: t('slide7_target4', 'slides'), limitations: t('slide7_limits4', 'slides'), advantage: t('slide7_advantage4', 'slides') },
+            { name: 'TrackIU', price: '€450 + €20/mes', target: t('slide7_target5', 'slides'), limitations: t('slide7_limits5', 'slides'), advantage: t('slide7_advantage5', 'slides') }
+          ];
+          return (
+            <SlideWrapper>
+              <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide7_title', 'slides')}</h2>
+                <div className="overflow-x-auto rounded-lg border border-gray-200">
+                    <table className="w-full text-sm text-left">
+                        <thead className="bg-[#4A90A4] text-white">
+                            <tr>
+                                <th className="p-3">{t('slide7_h1', 'slides')}</th>
+                                <th className="p-3">{t('slide7_h2', 'slides')}</th>
+                                <th className="p-3">{t('slide7_h3', 'slides')}</th>
+                                <th className="p-3">{t('slide7_h4', 'slides')}</th>
+                                <th className="p-3">{t('slide7_h5', 'slides')}</th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white text-[#2B5F75]">
+                            {competitors.map((c, index) => (
+                                <tr key={c.name} className={`border-b border-gray-200 last:border-b-0 ${index === competitors.length - 1 ? 'bg-teal-100 font-bold' : ''}`}>
+                                    <td className="p-3">{c.name}</td>
+                                    <td className="p-3">{c.price}</td>
+                                    <td className="p-3">{c.target}</td>
+                                    <td className="p-3">{c.limitations}</td>
+                                    <td className="p-3">{c.advantage}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </SlideWrapper>
+          );
+        };
+        
+        const Slide8 = () => {
+            const { t } = useLanguage();
+            const DifferentiatorCard = ({ icon, title, description }) => (
+                <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80 text-center flex flex-col items-center">
+                    <div className="text-5xl mb-4">{icon}</div>
+                    <h3 className="text-lg font-semibold text-[#5CBCC8] mb-2">{title}</h3>
+                    <p className="text-gray-600 text-sm">{description}</p>
+                </div>
+            );
+            const differentiators = [
+                { icon: '🎯', title: t('slide8_card1_title', 'slides'), description: t('slide8_card1_text', 'slides') },
+                { icon: '⚡️', title: t('slide8_card2_title', 'slides'), description: t('slide8_card2_text', 'slides') },
+                { icon: '🔧', title: t('slide8_card3_title', 'slides'), description: t('slide8_card3_text', 'slides') },
+                { icon: '💎', title: t('slide8_card4_title', 'slides'), description: t('slide8_card4_text', 'slides') },
+                { icon: '🧠', title: t('slide8_card5_title', 'slides'), description: t('slide8_card5_text', 'slides') }
+            ];
+            return (
+                <SlideWrapper>
+                    <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide8_title', 'slides')}</h2>
+                        <div className="grid md:grid-cols-3 gap-6">
+                            {differentiators.slice(0, 3).map(d => <DifferentiatorCard key={d.title} {...d} />)}
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-6 mt-6 md:w-2/3 mx-auto">
+                             {differentiators.slice(3).map(d => <DifferentiatorCard key={d.title} {...d} />)}
+                        </div>
+                    </div>
+                </SlideWrapper>
+            );
+        };
+
+        const Slide9 = () => {
+          const { t } = useLanguage();
+          const TeamMemberCard = ({ name, title, equity, details }) => (
+              <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80 h-full">
+                  <h3 className="text-xl font-bold text-[#2B5F75]">{name}</h3>
+                  <p className="text-[#4A90A4] font-semibold mb-1">{title}</p>
+                  <p className="text-[#5CBCC8] font-bold mb-4">{equity}</p>
+                  <div className="text-sm text-gray-600 space-y-2">{details}</div>
+              </div>
+          );
+          return (
+              <SlideWrapper>
+                  <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide9_title', 'slides')}</h2>
+                      <div className="grid md:grid-cols-3 gap-6">
+                          <TeamMemberCard 
+                              name="José Luis Oñate Parra"
+                              title={t('slide9_p1_title', 'slides')}
+                              equity="62% equity"
+                              details={
+                                  <React.Fragment>
+                                      <p><strong className="text-gray-800">{t('slide9_p1_exp_label', 'slides')}:</strong> {t('slide9_p1_exp_text', 'slides')}</p>
+                                      <p><strong className="text-gray-800">{t('slide9_p1_resp_label', 'slides')}:</strong> {t('slide9_p1_resp_text', 'slides')}</p>
+                                  </React.Fragment>
+                              }
+                          />
+                           <TeamMemberCard 
+                              name='Ignacio "Nacho" Sánchez Holgueras'
+                              title={t('slide9_p2_title', 'slides')}
+                              equity="15% equity"
+                              details={
+                                   <React.Fragment>
+                                      <p><strong className="text-gray-800">{t('slide9_p2_exp_label', 'slides')}:</strong> {t('slide9_p2_exp_text', 'slides')}</p>
+                                      <p><strong className="text-gray-800">{t('slide9_p2_resp_label', 'slides')}:</strong> {t('slide9_p2_resp_text', 'slides')}</p>
+                                      <p><strong className="text-gray-800">{t('slide9_p1_exp_label', 'slides')}:</strong> {t('slide9_p2_expr_text', 'slides')}</p>
+                                  </React.Fragment>
+                              }
+                          />
+                           <TeamMemberCard 
+                              name="José Rafael Camacho"
+                              title={t('slide9_p3_title', 'slides')}
+                              equity="3% equity"
+                              details={
+                                  <p><strong className="text-gray-800">{t('slide9_p1_resp_label', 'slides')}:</strong> {t('slide9_p3_resp_text', 'slides')}</p>
+                              }
+                          />
+                      </div>
+                       <div className="mt-8 bg-teal-50 rounded-lg p-4 text-center">
+                          <p className="text-sm text-[#2B5F75] font-medium">{t('slide9_investors', 'slides')}</p>
+                      </div>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        const Slide10 = () => {
+          const { t } = useLanguage();
+          const CheckIcon = () => (
+              <svg className="w-5 h-5 text-teal-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          );
+          const RoadmapPhase = ({ title, items }) => (
+              <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                  <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{title}</h3>
+                  <ul className="space-y-3 text-gray-600">
+                      {items.map((item, index) => (
+                          <li key={index} className="flex items-start"><CheckIcon />{item}</li>
+                      ))}
+                  </ul>
+              </div>
+          );
+          return (
+              <SlideWrapper>
+                  <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide10_title', 'slides')}</h2>
+                      <div className="grid md:grid-cols-2 gap-8">
+                          <div className="space-y-8">
+                              <RoadmapPhase title={t('slide10_p1_title', 'slides')} items={[t('slide10_p1_i1', 'slides'), t('slide10_p1_i2', 'slides')]} />
+                              <RoadmapPhase title={t('slide10_p2_title', 'slides')} items={[t('slide10_p2_i1', 'slides'), t('slide10_p2_i2', 'slides')]} />
+                          </div>
+                          <div className="space-y-8 md:mt-12">
+                               <RoadmapPhase title={t('slide10_p3_title', 'slides')} items={[t('slide10_p3_i1', 'slides'), t('slide10_p3_i2', 'slides')]} />
+                               <RoadmapPhase title={t('slide10_p4_title', 'slides')} items={[t('slide10_p4_i1', 'slides'), t('slide10_p4_i2', 'slides')]} />
+                          </div>
+                      </div>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        const Slide11 = () => {
+          const { t } = useLanguage();
+          const usersCount = useCountUp(3000000, 2000);
+          const arrCount = useCountUp(100000000, 2000);
+
+          const formatUsers = (val) => {
+            if (val < 1000) return val.toString();
+            if (val < 1000000) return `${(val / 1000).toFixed(0)}K`;
+            return `${(val / 1000000).toFixed(1).replace('.0', '')}M`;
+          };
+
+          const formatArr = (val) => {
+            if (val < 1000000) return `€${(val / 1000).toFixed(0)}K ARR`;
+            return `€${(val / 1000000).toFixed(0)}M ARR`;
+          };
+
+          const CheckIcon = () => (
+              <svg className="w-5 h-5 text-teal-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          );
+          
+          const MetricCard = ({ value, label, primary = false }) => (
+              <div className={`p-6 rounded-xl shadow-lg text-center ${primary ? 'bg-gradient-to-r from-[#5CBCC8] to-[#4A90A4] text-white' : 'bg-white text-[#2B5F75] border border-gray-200/80'}`}>
+                  <p className="text-4xl md:text-5xl font-bold">{value}</p>
+                  <p className="mt-2 text-sm">{label}</p>
+              </div>
+          );
+
+          return (
+              <SlideWrapper>
+                  <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide11_title', 'slides')}</h2>
+                      <div className="grid md:grid-cols-2 gap-6 mb-8">
+                          <MetricCard value={formatUsers(usersCount)} label={t('slide11_metric1', 'slides')} primary />
+                          <MetricCard value={formatArr(arrCount)} label={t('slide11_metric2', 'slides')} primary />
+                          <MetricCard value="15,000" label={t('slide11_metric3', 'slides')} />
+                          <MetricCard value={t('slide11_metric4_value', 'slides')} label={t('slide11_metric4_label', 'slides')} />
+                      </div>
+                      
+                      <div className="mt-8 bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                          <div className="text-center">
+                              <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{t('slide11_revolution_title', 'slides')}</h3>
+                              <div className="flex flex-col md:flex-row justify-center items-center gap-x-6 gap-y-2 text-gray-600">
+                                  <span className="flex items-center"><CheckIcon /> {t('slide11_revolution_1', 'slides')}</span>
+                                  <span className="flex items-center"><CheckIcon /> {t('slide11_revolution_2', 'slides')}</span>
+                                  <span className="flex items-center"><CheckIcon /> {t('slide11_revolution_3', 'slides')}</span>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        const Slide12 = () => {
+          const { t } = useLanguage();
+          const [pulse, setPulse] = React.useState(false);
+
+          React.useEffect(() => {
+            setPulse(true);
+            const timer = setTimeout(() => setPulse(false), 1500);
+            return () => clearTimeout(timer);
+          }, []);
+
+          const CheckIcon = () => (
+            <svg className="w-5 h-5 text-teal-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          );
+
+          const FundItem = ({ title, amount, percentage, description }) => (
+              <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200/80 flex justify-between items-center h-full">
+                  <div>
+                      <p className="font-semibold text-[#2B5F75]">{title}</p>
+                      <p className="text-sm text-gray-500">{description}</p>
+                  </div>
+                  <div className="text-right">
+                      <p className="font-bold text-[#4A90A4]">{amount}</p>
+                      <p className="text-sm text-gray-500">{percentage}</p>
+                  </div>
+              </div>
+          );
+
+          const funds = [
+              { title: t('slide12_fund1_title', 'slides'), amount: '€30,000', percentage: '2%', description: t('slide12_fund1_desc', 'slides') },
+              { title: t('slide12_fund2_title', 'slides'), amount: '€420,000', percentage: '28%', description: t('slide12_fund2_desc', 'slides') },
+              { title: t('slide12_fund3_title', 'slides'), amount: '€150,000', percentage: '10%', description: t('slide12_fund3_desc', 'slides') },
+              { title: t('slide12_fund4_title', 'slides'), amount: '€150,000', percentage: '10%', description: t('slide12_fund4_desc', 'slides') },
+              { title: t('slide12_fund5_title', 'slides'), amount: '€250,000', percentage: '17%', description: t('slide12_fund5_desc', 'slides') },
+              { title: t('slide12_fund6_title', 'slides'), amount: '€250,000', percentage: '17%', description: t('slide12_fund6_desc', 'slides') },
+              { title: t('slide12_fund7_title', 'slides'), amount: '€250,000', percentage: '17%', description: t('slide12_fund7_desc', 'slides') },
+          ];
+
+          return (
+              <SlideWrapper>
+                  <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-4">{t('slide12_title', 'slides')}</h2>
+                      <div className={`text-center bg-gradient-to-r from-[#5CBCC8] to-[#4A90A4] text-white p-4 rounded-xl shadow-lg mb-8 ${pulse ? 'animate-pulse-once' : ''}`}>
+                          <p className="text-2xl md:text-3xl font-bold">{t('slide12_objective', 'slides')}</p>
+                      </div>
+                      <h3 className="text-xl font-semibold text-center text-[#5CBCC8] mb-6">{t('slide12_distribution_title', 'slides')}</h3>
+                      <div className="flex flex-wrap justify-center gap-4">
+                          {funds.map(fund => (
+                            <div key={fund.title} className="w-full md:w-[calc(50%-0.5rem)]">
+                              <FundItem {...fund} />
+                            </div>
+                          ))}
+                      </div>
+
+                      <div className="mt-8 border-t border-gray-200/80 pt-8">
+                          <div className="bg-white p-6 rounded-xl shadow-md border border-[#7DD3DB]/50">
+                              <h3 className="text-xl font-semibold text-center text-[#5CBCC8] mb-4">{t('slide16_investors_title', 'slides')}</h3>
+                               <ul className="space-y-3 text-gray-600 text-left max-w-md mx-auto">
+                                  <li className="flex items-start"><CheckIcon /> {t('slide16_investors_1', 'slides')}</li>
+                                  <li className="flex items-start"><CheckIcon /> {t('slide16_investors_2', 'slides')}</li>
+                                  <li className="flex items-start"><CheckIcon /> {t('slide16_investors_3', 'slides')}</li>
+                                  <li className="flex items-start"><CheckIcon /> {t('slide16_investors_4', 'slides')}</li>
+                               </ul>
+                          </div>
+                      </div>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        const Slide13 = () => {
+          const { t } = useLanguage();
+          const CheckIcon = () => (
+              <svg className="w-5 h-5 text-teal-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          );
+          const RiskCard = ({ title, probability, mitigator }) => {
+              const { t } = useLanguage();
+              return (
+                  <div className="bg-orange-50 border-l-4 border-orange-300 p-6 rounded-r-lg">
+                      <h3 className="text-lg font-bold text-orange-800">{title}</h3>
+                      <p className="text-sm text-orange-600 mb-2">{t('slide13_prob_label', 'slides')}: {probability}</p>
+                      <p className="text-gray-700">{t('slide13_miti_label', 'slides')}: {mitigator}</p>
+                  </div>
+              );
+          };
+          const DefenseItem = ({ label, text }) => (
+              <div className="flex items-start">
+                  <CheckIcon />
+                  <div>
+                      <p className="font-semibold text-gray-800">{label}</p>
+                      <p className="text-sm text-gray-600">{text}</p>
+                  </div>
+              </div>
+          );
+          const risks = [
+              { title: t('slide13_risk1_title', 'slides'), probability: t('slide13_prob_medium', 'slides'), mitigator: t('slide13_risk1_miti', 'slides') },
+              { title: t('slide13_risk2_title', 'slides'), probability: t('slide13_prob_medium', 'slides'), mitigator: t('slide13_risk2_miti', 'slides') },
+              { title: t('slide13_risk3_title', 'slides'), probability: t('slide13_prob_medium', 'slides'), mitigator: t('slide13_risk3_miti', 'slides') },
+              { title: t('slide13_risk4_title', 'slides'), probability: t('slide13_prob_low', 'slides'), mitigator: t('slide13_risk4_miti', 'slides') },
+          ];
+          return (
+              <SlideWrapper>
+                  <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide13_title', 'slides')}</h2>
+                      <div className="grid md:grid-cols-2 gap-6 mb-8">
+                          {risks.map(risk => <RiskCard key={risk.title} {...risk} />)}
+                      </div>
+                       <div className="mt-8 bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                          <h3 className="text-xl font-semibold text-center text-[#5CBCC8] mb-6">{t('slide13_defense_title', 'slides')}</h3>
+                          <div className="grid md:grid-cols-2 gap-x-8 gap-y-4 text-left max-w-4xl mx-auto">
+                              <DefenseItem label={t('slide13_defense1_label', 'slides')} text={t('slide13_defense1_text', 'slides')} />
+                              <DefenseItem label={t('slide13_defense2_label', 'slides')} text={t('slide13_defense2_text', 'slides')} />
+                              <DefenseItem label={t('slide13_defense3_label', 'slides')} text={t('slide13_defense3_text', 'slides')} />
+                              <DefenseItem label={t('slide13_defense4_label', 'slides')} text={t('slide13_defense4_text', 'slides')} />
+                          </div>
+                      </div>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+
+        const Slide14 = () => {
+          const { t } = useLanguage();
+          const CheckIcon = () => (
+              <svg className="w-5 h-5 text-teal-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          );
+          const ImpactCard = ({ icon, title, items }) => (
+              <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                  <div className="flex items-center mb-4">
+                      <span className="text-3xl mr-3">{icon}</span>
+                      <h3 className="text-xl font-semibold text-[#5CBCC8]">{title}</h3>
+                  </div>
+                  <ul className="space-y-2 text-gray-600 text-sm">
+                      {items.map((item, index) => <li key={index} className="flex items-start"><CheckIcon /> {item}</li>)}
+                  </ul>
+              </div>
+          );
+          const impacts = [
+              { icon: '🏥', title: t('slide14_card1_title', 'slides'), items: [t('slide14_card1_i1', 'slides'), t('slide14_card1_i2', 'slides'), t('slide14_card1_i3', 'slides')] },
+              { icon: '🌍', title: t('slide14_card2_title', 'slides'), items: [t('slide14_card2_i1', 'slides'), t('slide14_card2_i2', 'slides'), t('slide14_card2_i3', 'slides')] },
+              { icon: '💡', title: t('slide14_card3_title', 'slides'), items: [t('slide14_card3_i1', 'slides'), t('slide14_card3_i2', 'slides'), t('slide14_card3_i3', 'slides')] },
+              { icon: '📈', title: t('slide14_card4_title', 'slides'), items: [t('slide14_card4_i1', 'slides'), t('slide14_card4_i2', 'slides'), t('slide14_card4_i3', 'slides')] },
+          ];
+          return (
+              <SlideWrapper>
+                  <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide14_title', 'slides')}</h2>
+                      <div className="grid md:grid-cols-2 gap-6">
+                          {impacts.map(impact => <ImpactCard key={impact.title} {...impact} />)}
+                      </div>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        const Slide15 = () => {
+          const { t } = useLanguage();
+          const whatsappMessage = encodeURIComponent("Hola, Jose, Soy______ Y quiero invertir en TrackIU");
+          const whatsappUrl = `https://wa.me/34640742377?text=${whatsappMessage}`;
+          return (
+              <SlideWrapper>
+                  <div className="w-full max-w-5xl mx-auto bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-[#7DD3DB]/50 p-6 md:p-10">
+                      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#4A90A4] mb-8">{t('slide15_title', 'slides')}</h2>
+                      <div className="grid md:grid-cols-2 gap-8">
+                          <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                              <h3 className="text-xl font-bold text-[#2B5F75]">José Luis Oñate Parra</h3>
+                              <p className="text-[#4A90A4] font-semibold mb-4">CEO</p>
+                              <div className="space-y-2 text-gray-700">
+                                  <p><strong>{t('slide15_email_label', 'slides')}:</strong> <a href="mailto:jl.onate@trackiu.com" className="text-teal-600 hover:underline">jl.onate@trackiu.com</a></p>
+                                  <p><strong>{t('slide15_phone_label', 'slides')}:</strong> <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:underline">+34 640 74 23 77</a></p>
+                              </div>
+                          </div>
+                           <div className="bg-white p-6 rounded-xl shadow-md border border-gray-200/80">
+                              <h3 className="text-xl font-semibold text-[#5CBCC8] mb-4">{t('slide15_structure_title', 'slides')}</h3>
+                              <ul className="list-disc list-inside space-y-1 text-gray-700">
+                                  <li>Holding AvenidasBox</li>
+                                  <li>AvenidasBox SL (Matriz)</li>
+                                  <li>TrackIU SL</li>
+                              </ul>
+                              <p className="mt-4 text-gray-700"><strong>{t('slide15_address_label', 'slides')}:</strong> Calle Bayona, 3, 28028, Madrid</p>
+                          </div>
+                      </div>
+                      <div className="mt-8 text-center bg-gradient-to-r from-[#5CBCC8] to-[#4A90A4] text-white p-4 rounded-xl shadow-lg">
+                          <p className="text-lg md:text-xl font-bold">{t('slide15_cta', 'slides')}</p>
+                      </div>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        const Slide16 = () => {
+          const { t } = useLanguage();
+          return (
+              <SlideWrapper className="justify-center">
+                  <div className="w-full max-w-4xl mx-auto bg-gradient-to-r from-[#5CBCC8] to-[#4A90A4] text-white rounded-2xl shadow-2xl p-12 md:p-20 text-center flex flex-col justify-center items-center">
+                      <h1 className="text-5xl md:text-7xl font-bold mb-4">{t('slide16_thank_you', 'slides')}</h1>
+                      <p className="text-xl md:text-3xl font-light mb-12">TrackIU • 2025</p>
+                      <div className="w-24 h-1 bg-white/50 rounded-full mb-8"></div>
+                      <p className="text-xs md:text-sm">{t('slide1_disclaimer', 'slides')}</p>
+                  </div>
+              </SlideWrapper>
+          );
+        };
+        
+        // --- from content/slides.ts ---
+        const slides = [
+          Slide1, Slide2, Slide3, Slide4, Slide5, Slide6, Slide7, Slide8,
+          Slide9, Slide10, Slide11, Slide12, Slide13, Slide14, Slide15, Slide16,
+        ];
+
+        // --- from components/OnboardingNotification.tsx ---
+        const OnboardingNotification = () => {
+            return (
+                <div className="fixed bottom-5 left-5 bg-gray-800 text-white p-3 rounded-lg shadow-lg text-sm z-50 animate-fade-in-up max-w-xs">
+                    <p><strong>Pro Tip:</strong> Use <kbd className="font-sans bg-gray-600 rounded px-1.5 py-0.5">←</kbd> <kbd className="font-sans bg-gray-600 rounded px-1.5 py-0.5">→</kbd>, or triple-click the left/right side of the screen.</p>
+                </div>
+            );
+        };
+
+        // --- from components/Header.tsx ---
+        const Header = ({ currentSlide, totalSlides, onPrev, onNext }) => {
+          const { language, setLanguage } = useLanguage();
+          const languages = ['es', 'en', 'fr'];
+
+          const LanguageSwitcher = () => (
+            <div className="flex items-center space-x-1 bg-white/50 rounded-full p-1">
+              {languages.map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={`px-3 py-1 text-sm font-semibold rounded-full transition-colors duration-200 ${
+                    language === lang ? 'bg-[#5CBCC8] text-white' : 'text-[#2B5F75] hover:bg-[#7DD3DB]/50'
+                  }`}
+                >
+                  {lang.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          );
+
+          return (
+            <header className="relative z-10 flex items-center justify-between p-4 md:p-6 bg-white/20 backdrop-blur-sm">
+               <a 
+                  href="https://www.figma.com/proto/40Ip2EBvT2KfNbk2UsDeM9/Trackui?page-id=8%3A15&node-id=8-16&p=f&viewport=409%2C530%2C0.09&t=BGgXzjyxMgMokcgS-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=236%3A2924&show-proto-sidebar=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2"
+                  aria-label="TrackIU Prototype"
+                >
+                  <img src="assets/logo.png" alt="TrackIU Logo" className="h-8 w-auto hidden md:block" />
+                  <img src="assets/logo-mobile.png" alt="TrackIU Logo" className="h-8 w-8 md:hidden" />
+                  <span className="text-2xl font-bold text-[#2B5F75] hidden md:inline">TrackIU</span>
+              </a>
+              <div className="flex items-center space-x-4">
+                <button onClick={onPrev} className="p-2 rounded-full hover:bg-white/50 transition-colors" aria-label="Previous Slide">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#4A90A4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <span className="text-sm font-medium text-[#4A90A4] w-12 text-center">{`${currentSlide + 1} / ${totalSlides}`}</span>
+                <button onClick={onNext} className="p-2 rounded-full hover:bg-white/50 transition-colors" aria-label="Next Slide">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#4A90A4]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              <div className="flex items-center space-x-3">
+                <LanguageSwitcher />
+              </div>
+            </header>
+          );
+        };
+        
+        // --- from App.tsx ---
+        const App = () => {
+          const [currentSlide, setCurrentSlide] = React.useState(0);
+          const [showNotification, setShowNotification] = React.useState(false);
+          const totalSlides = slides.length;
+          const mainContentRef = React.useRef(null);
+
+          React.useEffect(() => {
+            const hasSeenNotification = sessionStorage.getItem('hasSeenNotification');
+            if (!hasSeenNotification) {
+              setShowNotification(true);
+              const timer = setTimeout(() => {
+                setShowNotification(false);
+                sessionStorage.setItem('hasSeenNotification', 'true');
+              }, 5000);
+              return () => clearTimeout(timer);
+            }
+          }, []);
+
+          const goToNextSlide = React.useCallback(() => {
+            setCurrentSlide((prev) => (prev + 1) % totalSlides);
+          }, [totalSlides]);
+
+          const goToPrevSlide = React.useCallback(() => {
+            setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+          }, [totalSlides]);
+          
+          React.useEffect(() => {
+            if (mainContentRef.current) {
+              mainContentRef.current.scrollTop = 0;
+            }
+          }, [currentSlide]);
+
+          React.useEffect(() => {
+            const handleKeyDown = (e) => {
+              if (e.key === 'ArrowRight') {
+                goToNextSlide();
+              } else if (e.key === 'ArrowLeft') {
+                goToPrevSlide();
+              } else if (e.key === 'Home') {
+                e.preventDefault();
+                setCurrentSlide(0);
+              } else if (e.key === 'End') {
+                e.preventDefault();
+                setCurrentSlide(totalSlides - 1);
+              } else if (!isNaN(parseInt(e.key)) && e.key >= '1' && e.key <= '9') {
+                e.preventDefault();
+                const slideIndex = parseInt(e.key) - 1;
+                if (slideIndex < totalSlides) {
+                    setCurrentSlide(slideIndex);
+                }
+              }
+            };
+            
+            let clickCount = 0;
+            let clickTimeout;
+
+            const handleMouseClick = (e) => {
+              if (e.target.closest('a, button')) return;
+              
+              clickCount++;
+              if (clickCount === 1) {
+                  clickTimeout = window.setTimeout(() => {
+                      clickCount = 0;
+                  }, 500);
+              } else if (clickCount === 3) {
+                  clearTimeout(clickTimeout);
+                  clickCount = 0;
+                  if (e.clientX > window.innerWidth / 2) {
+                    goToNextSlide();
+                  } else {
+                    goToPrevSlide();
+                  }
+              }
+            };
+
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('click', handleMouseClick);
+
+            return () => {
+              window.removeEventListener('keydown', handleKeyDown);
+              window.removeEventListener('click', handleMouseClick);
+              if(clickTimeout) clearTimeout(clickTimeout);
+            };
+          }, [goToNextSlide, goToPrevSlide, totalSlides]);
+
+          const CurrentSlideComponent = slides[currentSlide];
+
+          return (
+              <div className="flex flex-col w-full h-screen overflow-hidden bg-gradient-to-b from-[#e0f7fa] to-[#e0f2f1] text-[#2B5F75]">
+                <Header
+                  currentSlide={currentSlide}
+                  totalSlides={totalSlides}
+                  onNext={goToNextSlide}
+                  onPrev={goToPrevSlide}
+                />
+                <main ref={mainContentRef} className="w-full flex-grow min-h-0 overflow-y-auto">
+                    <CurrentSlideComponent />
+                </main>
+                {showNotification && <OnboardingNotification />}
+              </div>
+          );
+        };
+
+        const AppWrapper = () => (
+            <LanguageProvider>
+                <App />
+            </LanguageProvider>
+        );
+        
+        // --- from index.tsx ---
+        const container = document.getElementById('root');
+        if (container) {
+          const root = ReactDOM.createRoot(container);
+          root.render(
+            <React.StrictMode>
+              <AppWrapper />
+            </React.StrictMode>
+          );
+        } else {
+          console.error('Failed to find the root element');
+        }
+
+    </script>
 </body>
 </html>
